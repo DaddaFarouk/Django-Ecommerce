@@ -36,32 +36,42 @@
 		<hr>
 			<div class="row">
 				<div class="item-option-select">
-					<h6>Choose Edition</h6>
+					{% if single_product.variation_set.editions.exists %}
+						<h6>Choose Edition</h6>
+					{% endif %}
 					<div class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
 
-					{% for i in single_product.variation_set.editions %}
+						{% for i in single_product.variation_set.editions %}
 
-					<label class="btn btn-light">
-						<input type="radio" name="edition" value="{{i.variation_value | lower }}" required> {{i.variation_value | capfirst}}
-					</label>
+							<label class="btn btn-light">
+								<input type="radio" name="edition" value="{{i.variation_value | lower }}" required> <b> {{i.variation_value | capfirst}} </b> <br/> <br/>
+								{% if i.variation_price %} ${{i.variation_price}} {% else %} _ {% endif%}
+							</label>
 
-					{% endfor %}
+						{% endfor %}
 
 					</div> 
 				</div>
 			</div> <!-- row.// -->
 			<div class="row">
 				<div class="item-option-select">
-					<h6>Select Platform</h6>
+
+					{% if single_product.variation_set.platforms.exists %}
+						{% if single_product.stock > 0 %}
+						<h6>Select Platform</h6>
+						{% endif %}
+					{% endif %}
 					<div class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
+						{% if single_product.stock > 0 %}
+						{% for i in single_product.variation_set.platforms %}
 
-					{% for i in single_product.variation_set.platforms %}
+							<label class="btn btn-light">
+								<input type="radio" name="platform" value="{{i.variation_value | lower }}" required> {{i.variation_value | capfirst}}
+							</label>
 
-					<label class="btn btn-light">
-						<input type="radio" name="platform" value="{{i.variation_value | lower }}" required> {{i.variation_value | capfirst}}
-					</label>
+						{% endfor %}
+						{% endif %}
 
-					{% endfor %}
 					</div> 
 				</div>
 			</div> <!-- row.// -->

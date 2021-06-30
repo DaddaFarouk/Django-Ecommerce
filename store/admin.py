@@ -9,7 +9,7 @@ class ProductAdmin(admin.ModelAdmin):
 
 
 class VariationAdmin(admin.ModelAdmin):
-    list_display  = ('product', 'variation_cat', 'variation_value','created_date', 'is_active')
+    list_display  = ('product', 'variation_cat', 'variation_value','variation_price', 'created_date', 'is_active')
     list_editable = ('is_active',)
     list_filter   = ('product', 'variation_cat', 'variation_value')
     
