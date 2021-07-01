@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'category',
+    'accounts',
     'store',
     'carts',
 ]
@@ -73,6 +74,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'gamerzone.wsgi.application'
+
+AUTH_USER_MODEL = 'accounts.Account'
 
 
 # Database
