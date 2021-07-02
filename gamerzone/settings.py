@@ -135,3 +135,22 @@ STATICFILES_DIRS = [
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR /'media' 
+
+
+
+from django.contrib.messages import constants as messages
+MESSAGE_TAGS = {
+    messages.ERROR: 'danger',
+}
+
+
+
+# Activation Account SMTP configuration
+
+EMAIL_USE_TLS       = True
+EMAIL_PORT          = 587
+EMAIL_HOST          = 'smtp.gmail.com'
+EMAIL_HOST_USER     = 'gamerzoneemsi@gmail.com'
+EMAIL_HOST_PASSWORD = '21E09C42E6'
+EMAIL_BACKEND       = 'django.core.mail.backends.smtp.EmailBackend'
+

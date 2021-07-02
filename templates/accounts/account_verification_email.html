@@ -1,0 +1,10 @@
+{% autoescape off %}  <!-- Protection against the cross site scripting -->
+
+Hi {{user.first_name}},
+
+Please click on the link below to confirm your registration:
+http://{{domain}}{% url 'activate' uidb64=uid token=token %} 
+
+If you haven't created any account on our platform, please just ignore this email.
+
+{% endautoescape %}
