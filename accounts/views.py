@@ -4,6 +4,9 @@ from .forms import RegistrationForm
 from .models import Account
 from django.contrib import messages, auth
 from django.contrib.auth.decorators import login_required, user_passes_test
+from carts.views import _cart_id
+from carts.models import Cart, CartItem
+import requests
 
 # Verification email
 from django.contrib.sites.shortcuts import get_current_site
@@ -65,9 +68,60 @@ def login(request):
         user = auth.authenticate(email=email, password=password)
 
         if user is not None:
+            try: # before the user logs in check if he has created a cart
+                cart = Cart.objects.get(cart_id=_cart_id(request))
+                cart_item_exists = CartItem.objects.filter(cart=cart).exists()
+                if cart_item_exists:
+                    cart_item = CartItem.objects.filter(cart=cart)
+                    
+                    # get the product variation by cart id
+                    product_variation = []
+                    for item in cart_item:
+                        variation = item.variations.all()
+                        product_variation.append(list(variation))
+                    
+                    # get the cart items from the user to access his product variations
+                    cart_item  = CartItem.objects.filter(user=user)
+                    # existing_variations from database
+                    # current variations from product_variation
+                    # item_id from database
+                    existing_variations = []
+                    id = []
+                    for item in cart_item:
+                        ex_variation = item.variations.all() # get each variations
+                        existing_variations.append(list(ex_variation)) # Because the ex_variation is a QuerySet
+                        id.append(item.id)
+
+                    for pr in product_variation:    # search the common items between the two lists
+                        if pr in existing_variations:
+                            index   = existing_variations.index(pr) # position of the common item
+                            item_id = id[index]
+                            item    = CartItem.objects.get(id=item_id) # get the common item
+                            item.quantity +=1
+                            item.user      = user
+                            item.save()
+
+                        else:
+                            cart_item = CartItem.objects.filter(cart=cart)
+                            for item in cart_item: # assign the items to the user's cart
+                                item.user = user
+                                item.save()
+            except:
+                pass
+
             auth.login(request, user)
-            messages.success(request,'You are now logged in')
-            return redirect('dashboard')
+            url = request.META.get('HTTP_REFERER') # grab the previous url 
+            try: # redirect the user to the checkout page instead of the dashboard
+                query  = requests.utils.urlparse(url).query # next=/cart/checkout/
+                params = dict(x.split('=') for x in query.split('&')) # split query into a dictionary
+                if 'next' in params:
+                    nextPage = params['next']
+                    return redirect(nextPage)
+
+            except:
+                messages.success(request,'You are now logged in')
+                return redirect('dashboard')
+
         else:
             messages.error(request,'Invalid login credentials')
             return redirect('login')
