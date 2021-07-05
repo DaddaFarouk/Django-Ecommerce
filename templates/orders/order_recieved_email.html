@@ -1,0 +1,11 @@
+{% autoescape off %}  
+
+Hi {{user.first_name}},
+
+YOUR ORDER HAS BEEN RECEIVED
+
+Order Number: {{order.order_number}}
+Tax: ${{order.tax|floatformat:2}}
+Total: ${{order.order_total|floatformat:2}}
+
+{% endautoescape %}
