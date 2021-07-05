@@ -3,6 +3,7 @@
 Hi {{user.first_name}},
 
 YOUR ORDER HAS BEEN RECEIVED
+http://{{domain}}/orders/order_complete/?order_number={{order.order_number}}&payment_id={{order.payment.payment_id}}
 
 Order Number: {{order.order_number}}
 Tax: ${{order.tax|floatformat:2}}

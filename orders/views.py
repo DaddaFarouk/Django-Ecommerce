@@ -6,6 +6,7 @@ from .models import Order, OrderProduct, Payment
 from store.models import Product
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
+from django.contrib.sites.shortcuts import get_current_site
 import datetime
 import json
 
@@ -61,9 +62,11 @@ def payments(request): # Get the data from paypal
     # Send order received email to customer
 
     mail_subject      = 'Thank you for your order!'
+    domain      = get_current_site(request)
     message           = render_to_string('orders/order_recieved_email.html', {
         'user': request.user,
         'order': order,
+        'domain': domain,
     })
     to_email          = order.email
     send_email        = EmailMessage(mail_subject, message, to=[to_email])

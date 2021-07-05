@@ -19,3 +19,21 @@
 	</div><!-- //container -->
 </footer>
 <!-- ========================= FOOTER END // ========================= -->
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" type="text/javascript"></script>
+
+<script>
+
+	$(document).ready(function(){   /* When the document is ready */
+		$('.thumb a').click(function(e){    /* When we click on the thumb */
+			e.preventDefault();  /*  Prevent the image from oppening in a new tab  */
+			$('.mainImage img').attr('src', $(this).attr("href")); /* Open the image in the main image container */
+		})
+	})
+</script>
+
+
+
+</body>
+</html>
