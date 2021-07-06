@@ -35,7 +35,7 @@ def register(request):
             user.phone_number = phone_number                       # because the create_user function doesn't take the phone_number as a prop
             user.save()
 
-            user_profile = UserProfile.objects.create(user=user, profile_picture=None)
+            UserProfile.objects.create(user=user, profile_picture=None)
 
             # USER ACTIVATION
             current_site      = get_current_site(request)
